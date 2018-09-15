@@ -61,7 +61,7 @@ const style = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,.8)',
         fontSize: 30,
         padding: 10,
-        color: 'white',
+        color: '#fff',
         position:'absolute',
         bottom: 0,
         right:0
