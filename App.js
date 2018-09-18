@@ -11,8 +11,10 @@ import {
     StatusBar,
     FlatList
 
-} from 'react-native';
+} from 'react-native'
+
 import ColorButton from './components/colorButton'
+import ColorForm from './components/colorForm'
 
 //-- import img
 import picSierra from './assets/Sierra-Spencer.png'
@@ -24,14 +26,8 @@ export default class App extends Component {
         super(props);
         // define variable for sample large data
         let ds = [
-            {color: 'red'},
             {color: 'blue'},
             {color: 'green'},
-            {color: 'salmon'},
-            {color: 'red'},
-            {color: '#00ff00'},
-            {color: 'green'},
-            {color: 'salmon'}
         ];
 
         /// state
@@ -41,7 +37,8 @@ export default class App extends Component {
         };
 
         /// binding
-        this.onChangeColor = this.onChangeColor.bind(this)
+        this.onChangeColor = this.onChangeColor.bind(this);
+        this.newColor = this.newColor.bind(this)
 
     }
 
@@ -49,6 +46,11 @@ export default class App extends Component {
         this.setState({
             backgroundColor,
         });
+    }
+    newColor(newColor){
+        this.setState({
+            data: [...this.state.data, {color: newColor}]
+        })
     }
 
     render() {
@@ -62,7 +64,8 @@ export default class App extends Component {
                 ]}
                 data={data}
                 ListHeaderComponent={
-                    <Text style={style.header}>Color List</Text>
+                    <ColorForm
+                        onNewColor={this.newColor}/>
                 }
                 renderItem={
                     eachBtn =>{
@@ -73,7 +76,6 @@ export default class App extends Component {
                                 onSelect={this.onChangeColor}/>
                         )
                     }
-
                 }
                 keyExtractor={(item, index) => index.toString()}/>
         );
