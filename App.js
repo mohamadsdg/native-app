@@ -8,7 +8,9 @@ import {
     Text,
     View,
     ScrollView,
-    StatusBar
+    StatusBar,
+    FlatList
+
 } from 'react-native';
 import ColorButton from './components/colorButton'
 
@@ -20,64 +22,60 @@ import picTanner from './assets/Tanner-McTab.png'
 export default class App extends Component {
     constructor(props) {
         super(props);
+        // define variable for sample large data
+        let ds = [
+            {color: 'red'},
+            {color: 'blue'},
+            {color: 'green'},
+            {color: 'salmon'},
+            {color: 'red'},
+            {color: '#00ff00'},
+            {color: 'green'},
+            {color: 'salmon'}
+        ];
+
+        /// state
         this.state = {
-            backgroundColor: "blue"
+            backgroundColor: "blue",
+            data : ds
         };
 
+        /// binding
         this.onChangeColor = this.onChangeColor.bind(this)
 
     }
 
     onChangeColor(backgroundColor){
-        this.setState({backgroundColor});
+        this.setState({
+            backgroundColor,
+        });
     }
 
     render() {
-        const {backgroundColor} = this.state;
+        const {backgroundColor,data} = this.state;
+        // console.log(data);
         return (
-            <ScrollView style={
-                [
-                    {backgroundColor:backgroundColor},
+            <FlatList
+                style={[
+                    {backgroundColor: backgroundColor},
                     style.container
-                ]}>
-                <StatusBar hidden={false}/>
-                <ColorButton
-                    backgroundColor="yellow"
-                    onSelect={this.onChangeColor}/>
-                <ColorButton
-                    backgroundColor="red"
-                    onSelect={this.onChangeColor}/>
-                <ColorButton
-                    backgroundColor="green"
-                    onSelect={this.onChangeColor}/>
-                <ColorButton
-                    backgroundColor="salmon"
-                    onSelect={this.onChangeColor}/>
-                <ColorButton
-                    backgroundColor="#00ff00"
-                    onSelect={this.onChangeColor}/>
-                <ColorButton
-                    backgroundColor="rgb(255,0,255)"
-                    onSelect={this.onChangeColor}/>
-                <ColorButton
-                    backgroundColor="yellow"
-                    onSelect={this.onChangeColor}/>
-                <ColorButton
-                    backgroundColor="red"
-                    onSelect={this.onChangeColor}/>
-                <ColorButton
-                    backgroundColor="green"
-                    onSelect={this.onChangeColor}/>
-                <ColorButton
-                    backgroundColor="salmon"
-                    onSelect={this.onChangeColor}/>
-                <ColorButton
-                    backgroundColor="#00ff00"
-                    onSelect={this.onChangeColor}/>
-                <ColorButton
-                    backgroundColor="rgb(255,0,255)"
-                    onSelect={this.onChangeColor}/>
-            </ScrollView>
+                ]}
+                data={data}
+                ListHeaderComponent={
+                    <Text style={style.header}>Color List</Text>
+                }
+                renderItem={
+                    eachBtn =>{
+                        // console.log(eachBtn);
+                        return (
+                            <ColorButton
+                                backgroundColor={eachBtn.item.color}
+                                onSelect={this.onChangeColor}/>
+                        )
+                    }
+
+                }
+                keyExtractor={(item, index) => index.toString()}/>
         );
     }
 }
@@ -86,4 +84,11 @@ const style = StyleSheet.create({
     container:{
         flex:1,
     },
+    header: {
+        backgroundColor: 'lightgrey',
+        padding: 10,
+        paddingTop: 20,
+        fontSize: 30,
+        textAlign: 'center'
+    }
 });
