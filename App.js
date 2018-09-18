@@ -3,6 +3,7 @@ import {
     Dimensions,
     Image,
     ImageBackground,
+    TouchableHighlight,
     StyleSheet,
     Text,
     View,
@@ -39,12 +40,18 @@ export default class App extends Component {
                     style.container
                 ]}>
                 <StatusBar hidden={false}/>
-                <Text
+                <TouchableHighlight
                     style={style.button}
-                    onPress={() => this.onChangeColor("green")}>green</Text>
-                <Text
-                    style={style.button}
-                    onPress={() => this.onChangeColor("red")}>red</Text>
+                    onPress={()=>this.onChangeColor('yellow')}
+                    underlayColor='orange'>
+                    <View style={style.row}>
+                        <View style={[
+                            style.sample,
+                            {backgroundColor:'yellow'}
+                        ]}></View>
+                        <Text style={style.texts}>Yellow</Text>
+                    </View>
+                </TouchableHighlight>
             </View>
         );
     }
@@ -57,14 +64,31 @@ const style = StyleSheet.create({
         alignItems : "center",
     },
     button:{
-        fontSize:25,
         padding:15,
         margin:15,
         borderWidth:2,
         borderColor:"#000",
+        alignSelf:'stretch',
+        borderRadius:10,
+        backgroundColor:'rgba(255,255,255,0.4)',
+    },
+    row:{
+        alignItems:'center',
+        flexDirection:'row',
+        alignSelf:'stretch',
+
+    },
+    sample:{
+        width:20,
+        height:20,
+        backgroundColor:'#fff',
+        borderRadius:50,
+        marginRight: 7
+    },
+    texts:{
+        fontSize:25,
         fontWeight:"bold",
         alignSelf:'stretch',
         textAlign:'center',
-        borderRadius:10
     }
 });
