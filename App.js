@@ -9,7 +9,8 @@ import {
     View,
     ScrollView,
     StatusBar,
-    FlatList
+    FlatList,
+    AsyncStorage
 
 } from 'react-native'
 
@@ -25,36 +26,79 @@ export default class App extends Component {
     constructor(props) {
         super(props);
         // define variable for sample large data
-        let ds = [
-            {color: 'blue'},
-            {color: 'green'},
-        ];
+        let ds = [];
 
         /// state
         this.state = {
-            backgroundColor: "blue",
-            data : ds
+            backgroundColor: "#fff",
+            data: ds
         };
 
         /// binding
         this.onChangeColor = this.onChangeColor.bind(this);
-        this.newColor = this.newColor.bind(this)
+        this.newColor = this.newColor.bind(this);
+        this.saveColors = this.saveColors.bind(this);
+        this.retrieveColors = this.retrieveColors.bind(this);
 
     }
 
-    onChangeColor(backgroundColor){
+    componentDidMount() {
+        // AsyncStorage.clear();
+        this.retrieveColors();
+    }
+
+    onChangeColor(backgroundColor) {
         this.setState({
             backgroundColor,
         });
     }
-    newColor(newColor){
-        this.setState({
-            data: [...this.state.data, {color: newColor}]
-        })
+
+    async saveColors(colors) {
+        try {
+           await AsyncStorage.setItem(
+                '@ColorListStore:Colors',
+                JSON.stringify(colors)
+            );
+        }
+        catch (Exception) {
+            console.log('from method saveColors', Exception);
+        }
+    }
+    async retrieveColors() {
+        try {
+            await AsyncStorage.getItem(
+                '@ColorListStore:Colors',
+                (error, response) => {
+                    if (error) {
+                        console.error('Error loading colors', error)
+                    } else {
+                        console.log('before parse',response);
+                        const availableColors = JSON.parse(response);
+                        console.log('after parse', availableColors);
+                        if (availableColors !== null){
+                            this.setState({
+                                data: availableColors
+                            })
+                        }
+                    }
+                }
+            );
+        }
+        catch (Exception) {
+            console.log('from method retrieveColors', Exception);
+        }
     }
 
+    newColor(newColor) {
+        this.setState({
+            data: [...this.state.data, {color: newColor}]
+        });
+        setTimeout(()=>{
+            this.saveColors(this.state.data);
+        },10)
+    }
     render() {
-        const {backgroundColor,data} = this.state;
+        const {backgroundColor, data} = this.state;
         // console.log(data);
         return (
             <FlatList
@@ -68,7 +112,7 @@ export default class App extends Component {
                         onNewColor={this.newColor}/>
                 }
                 renderItem={
-                    eachBtn =>{
+                    eachBtn => {
                         // console.log(eachBtn);
                         return (
                             <ColorButton
@@ -83,8 +127,8 @@ export default class App extends Component {
 }
 
 const style = StyleSheet.create({
-    container:{
-        flex:1,
+    container: {
+        flex: 1,
     },
     header: {
         backgroundColor: 'lightgrey',
