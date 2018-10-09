@@ -1,140 +1,19 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {
-    Dimensions,
-    Image,
-    ImageBackground,
-    TouchableHighlight,
-    StyleSheet,
-    Text,
-    View,
-    ScrollView,
-    StatusBar,
-    FlatList,
-    AsyncStorage
+    createStackNavigator
+} from 'react-navigation'
+import ColorList from './components/colorList'
 
-} from 'react-native'
+const App = createStackNavigator({
+    Home:{screen:ColorList}
+});
 
-import ColorButton from './components/colorButton'
-import ColorForm from './components/colorForm'
-
-//-- import img
-import picSierra from './assets/Sierra-Spencer.png'
-import picTanner from './assets/Tanner-McTab.png'
-//-- End import img
-
-export default class App extends Component {
-    constructor(props) {
-        super(props);
-        // define variable for sample large data
-        let ds = [];
-
-        /// state
-        this.state = {
-            backgroundColor: "#fff",
-            data: ds
-        };
-
-        /// binding
-        this.onChangeColor = this.onChangeColor.bind(this);
-        this.newColor = this.newColor.bind(this);
-        this.saveColors = this.saveColors.bind(this);
-        this.retrieveColors = this.retrieveColors.bind(this);
-
-    }
-
-    componentDidMount() {
-        // AsyncStorage.clear();
-        this.retrieveColors();
-    }
-
-    onChangeColor(backgroundColor) {
-        this.setState({
-            backgroundColor,
-        });
-    }
-
-    async saveColors(colors) {
-        try {
-           await AsyncStorage.setItem(
-                '@ColorListStore:Colors',
-                JSON.stringify(colors)
-            );
-        }
-        catch (Exception) {
-            console.log('from method saveColors', Exception);
-        }
-    }
-    async retrieveColors() {
-        try {
-            await AsyncStorage.getItem(
-                '@ColorListStore:Colors',
-                (error, response) => {
-                    if (error) {
-                        console.error('Error loading colors', error)
-                    } else {
-                        console.log('before parse',response);
-                        const availableColors = JSON.parse(response);
-                        console.log('after parse', availableColors);
-                        if (availableColors !== null){
-                            this.setState({
-                                data: availableColors
-                            })
-                        }
-                    }
-                }
-            );
-        }
-        catch (Exception) {
-            console.log('from method retrieveColors', Exception);
-        }
-    }
-
-    newColor(newColor) {
-        this.setState({
-            data: [...this.state.data, {color: newColor}]
-        });
-        setTimeout(()=>{
-            this.saveColors(this.state.data);
-        },10)
-    }
+/*class App extends Component {
     render() {
-        const {backgroundColor, data} = this.state;
-        // console.log(data);
         return (
-            <FlatList
-                style={[
-                    {backgroundColor: backgroundColor},
-                    style.container
-                ]}
-                data={data}
-                ListHeaderComponent={
-                    <ColorForm
-                        onNewColor={this.newColor}/>
-                }
-                renderItem={
-                    eachBtn => {
-                        // console.log(eachBtn);
-                        return (
-                            <ColorButton
-                                backgroundColor={eachBtn.item.color}
-                                onSelect={this.onChangeColor}/>
-                        )
-                    }
-                }
-                keyExtractor={(item, index) => index.toString()}/>
+            <ColorList/>
         );
     }
-}
+}*/
 
-const style = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    header: {
-        backgroundColor: 'lightgrey',
-        padding: 10,
-        paddingTop: 20,
-        fontSize: 30,
-        textAlign: 'center'
-    }
-});
+export default App;
