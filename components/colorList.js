@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import PropTypes  from 'prop-types'
+import PropTypes from 'prop-types'
 import {
     Dimensions,
     Image,
@@ -11,7 +11,8 @@ import {
     ScrollView,
     StatusBar,
     FlatList,
-    AsyncStorage
+    AsyncStorage,
+    Alert
 
 } from 'react-native'
 
@@ -25,8 +26,9 @@ import picTanner from './assets/Tanner-McTab.png'*/
 
 export default class ColorList extends Component {
     static navigationOptions = {
-        title:'Available Colors'
-    }
+        title: 'Available Colors'
+    };
+
     constructor(props) {
         super(props);
         // define variable for sample large data
@@ -45,15 +47,18 @@ export default class ColorList extends Component {
         this.retrieveColors = this.retrieveColors.bind(this);
 
     }
+
     componentDidMount() {
         // AsyncStorage.clear();
         this.retrieveColors();
     }
+
     onChangeColor(backgroundColor) {
         this.setState({
             backgroundColor,
         });
     }
+
     async saveColors(colors) {
         try {
             await AsyncStorage.setItem(
@@ -65,6 +70,7 @@ export default class ColorList extends Component {
             console.log('from method saveColors', Exception);
         }
     }
+
     async retrieveColors() {
         try {
             await AsyncStorage.getItem(
@@ -73,10 +79,10 @@ export default class ColorList extends Component {
                     if (error) {
                         console.error('Error loading colors', error)
                     } else {
-                        console.log('before parse',response);
+                        // console.log('before parse', response);
                         const availableColors = JSON.parse(response);
-                        console.log('after parse', availableColors);
-                        if (availableColors !== null){
+                        // console.log('after parse', availableColors);
+                        if (availableColors !== null) {
                             this.setState({
                                 data: availableColors
                             })
@@ -94,13 +100,15 @@ export default class ColorList extends Component {
         this.setState({
             data: [...this.state.data, {color: newColor}]
         });
-        setTimeout(()=>{
+        setTimeout(() => {
             this.saveColors(this.state.data);
-        },10)
+        }, 10)
     }
+
     render() {
+        const { navigate } = this.props.navigation;
         const {backgroundColor, data} = this.state;
-        // console.log(data);
+        // console.log(navigate);
         return (
             <FlatList
                 style={[
@@ -118,7 +126,10 @@ export default class ColorList extends Component {
                         return (
                             <ColorButton
                                 backgroundColor={eachBtn.item.color}
-                                onSelect={this.onChangeColor}/>
+                                /*onSelect={()=>{Alert.alert('do you want to detail color')}}*/
+                                onSelect={() => {
+                                    navigate('Detail', {color: eachBtn.item.color})
+                                }}/>
                         )
                     }
                 }
@@ -127,12 +138,12 @@ export default class ColorList extends Component {
     }
 }
 ColorList.defaultProps = {
-    onColorSelected: f=>f
-}
+    onColorSelected: f => f
+};
 
 ColorList.propTypes = {
     onColorSelected: PropTypes.func
-}
+};
 const style = StyleSheet.create({
     container: {
         flex: 1,
