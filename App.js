@@ -1,13 +1,19 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {
-    createStackNavigator
+    createStackNavigator,
 } from 'react-navigation'
 import ColorList from './components/colorList'
-import ColorInfo from './components/detailcolor'
+import ColorDetail from './components/detailcolor'
+import ColorInfo from './components/infocolor'
+
+// disable isMounted because related version react-native
+import {YellowBox} from "react-native";
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 const App = createStackNavigator({
     Home: {screen: ColorList},
-    Detail: {screen: ColorInfo}
+    Detail: {screen: ColorDetail},
+    Info: {screen: ColorInfo}
 });
 
 /*class App extends Component {

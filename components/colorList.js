@@ -12,7 +12,7 @@ import {
     StatusBar,
     FlatList,
     AsyncStorage,
-    Alert
+    Alert,
 
 } from 'react-native'
 
@@ -23,6 +23,7 @@ import ColorForm from './colorForm'
 /*import picSierra from './assets/Sierra-Spencer.png'
 import picTanner from './assets/Tanner-McTab.png'*/
 //-- End import img
+
 
 export default class ColorList extends Component {
     static navigationOptions = {
@@ -118,7 +119,8 @@ export default class ColorList extends Component {
                 data={data}
                 ListHeaderComponent={
                     <ColorForm
-                        onNewColor={this.newColor}/>
+                        onNewColor={this.newColor}
+                        navigation={this.props.navigation}/>
                 }
                 renderItem={
                     eachBtn => {

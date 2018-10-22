@@ -7,7 +7,7 @@ import {
 
 import ColorTools from 'color'
 
-const ColorInfo = ({navigation}) => {
+const ColorDetail = ({navigation}) => {
     // console.log(navigation);
     let Color = ColorTools(navigation.state.params.color);
     // console.log(Color);
@@ -27,7 +27,7 @@ const ColorInfo = ({navigation}) => {
 };
 
 
-ColorInfo.navigationOptions = ({navigation}) => ({
+ColorDetail.navigationOptions = ({navigation}) => ({
     title: `Detail ${navigation.state.params.color}`
     // title: `Detail`
 });
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ColorInfo
+export default ColorDetail
