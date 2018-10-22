@@ -1,27 +1,70 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {
-    createStackNavigator,
-} from 'react-navigation'
-import ColorList from './components/colorList'
-import ColorDetail from './components/detailcolor'
-import ColorInfo from './components/infocolor'
+    ScrollView,
+    FlatList,
+    ActivityIndicator,
+    View,
+    Text,
+    Image,
+    Dimensions,
+    StyleSheet
+} from 'react-native'
 
-// disable isMounted because related version react-native
-import {YellowBox} from "react-native";
-YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
+class App extends Component {
+    constructor(props) {
+        super(props);
 
-const App = createStackNavigator({
-    Home: {screen: ColorList},
-    Detail: {screen: ColorDetail},
-    Info: {screen: ColorInfo}
-});
-
-/*class App extends Component {
+        this.state = {
+            productImages: [],
+            fetching: false,
+        }
+    }
+    componentDidMount() {
+        // console.log('test');
+        this.setState({fetching: true});
+        // this.setState({fetching:false});
+        fetch('https://hplussport.com/api/products.php')
+            .then(response => response.json())
+            .then(products => products.map(x => x.image))
+            .then(productImages => this.setState({productImages, fetching: false}))
+            .catch(exception => console.log(exception))
+    }
     render() {
+        const {fetching, productImages} = this.state;
         return (
-            <ColorList/>
+            <View style={style.container}>
+                <ActivityIndicator
+                    size="large"
+                    style={style.spinner}
+                    animating={fetching}/>
+                <ScrollView style={style.container} horizontal={true}>
+                    {
+                        productImages.length !== 0 ?
+                            productImages.map((uri, i) => (
+                                <Image source={{uri: uri}} key={i} style={style.thumb}/>
+                            ))
+                            :
+                            null
+                    }
+                </ScrollView>
+            </View>
         );
     }
-}*/
+}
+
+const style = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    spinner: {
+        position: 'absolute',
+        height: Dimensions.get('window').height,
+        width: Dimensions.get('window').width
+    },
+    thumb: {
+        width: 375,
+        resizeMode: 'cover'
+    }
+});
 
 export default App;
