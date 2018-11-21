@@ -1,10 +1,12 @@
 import React,{Component}from 'react'
+
 import {
-    YellowBox,
-    View,
-    Text,
-    StyleSheet
-} from "react-native"
+    Container,
+    Header, Footer, Content,
+    Left, Right, Body,
+    Button, Icon, Title,
+    Text, FooterTab
+} from 'native-base'
 
 
 // disable isMounted because related version react-native
@@ -15,30 +17,35 @@ import {
 class App extends Component {
     render() {
         return (
-            <View style={style.container}>
-                <Text style={[style.welcome,style.f1]}>hello world</Text>
-                <Text style={[style.welcome,style.f2]}>hello world</Text>
-                <Text style={[style.welcome,style.f3]}>hello world</Text>
-            </View>
+            <Container >
+                <Header>
+                    <Left>
+                        <Button transparent>
+                            <Icon name="menu"/>
+                        </Button>
+                    </Left>
+                    <Body>
+                    <Title>Header</Title>
+                    </Body>
+                    <Right/>
+                </Header>
+                <Content>
+                    <Text>This is content section</Text>
+                </Content>
+                <Footer>
+                    <FooterTab>
+                        <Button full>
+                           <Text>Footer</Text>
+                        </Button>
+                    </FooterTab>
+                    <FooterTab>
+                        <Button full>
+                            <Text>Footer</Text>
+                        </Button>
+                    </FooterTab>
+                </Footer>
+            </Container>
         );
     }
 }
-
-const style = StyleSheet.create({
-    container :{
-        flex:1,
-        justifyContent:"center",
-        alignItems:"center",
-        backgroundColor:"#f5fcff"
-    },
-    welcome:{
-        fontSize:35,
-        textAlign:"center",
-        margin:8
-    },
-    f1:{fontFamily:'BlackHanSans'},
-    f2:{fontFamily:'Gloria'},
-    f3:{fontFamily:'SpaceMono'}
-});
-
 export default App;
