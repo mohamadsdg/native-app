@@ -4,6 +4,7 @@ import {
     Header,
     Container,
     Text,
+    View
 } from 'native-base'
 
 import {
@@ -16,9 +17,10 @@ class SideBar extends Component {
         return (
             <Container style={styles.SideBar_style}>
                 <Content>
-                    <Image source={require('../../assets/pic/head.jpg')}/>
-
-                    <Text>Hello</Text>
+                    <Image source={require('../../assets/pic/head-150.jpg')}/>
+                    <View>
+                        <Text>Hello</Text>
+                    </View>
                 </Content>
             </Container>
         );
