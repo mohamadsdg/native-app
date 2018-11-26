@@ -1,73 +1,26 @@
-import React, {Component} from 'react'
+import React from 'react'
+import {createStackNavigator} from "react-navigation";
 
-import {
-    Container,
-    Header, Footer, Content,
-    Left, Right, Body,
-    Button, Icon, Title,
-    Text, FooterTab,
-    Drawer
-} from 'native-base'
-
-import SideBar from './src/component/sideBar'
+//// pages ////
+import Index from './src/component';
+import BadgeCmp from './src/component/badge';
 
 
 // disable isMounted because related version react-native
-// import {YellowBox} from "react-native";
-// YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
+import {YellowBox} from "react-native";
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 
-class App extends Component {
-    constructor(props) {
-        super(props);
+const App = createStackNavigator({
+        Home: {screen: Index},
+        Badge: {screen: BadgeCmp}
+    },
+    {
+        headerMode: 'none',
+        mode: 'modal'
+    });
 
-    }
-
-    closeDrawer() {
-        this.drawer._root.close();
-    }
-    openDrawer() {
-        this.drawer._root.open();
-    }
-
-    render() {
-        return (
-            <Drawer
-                ref={(ref) => this.drawer = ref}
-                content={<SideBar/>}
-                onClose={() => this.closeDrawer()}>
-                <Container >
-                    <Header>
-                        <Left>
-                            <Button
-                                transparent
-                                onPress={() => this.openDrawer()}>
-                                <Icon name="menu"/>
-                            </Button>
-                        </Left>
-                        <Body>
-                            <Title>Header</Title>
-                        </Body>
-                        <Right/>
-                    </Header>
-                    <Content>
-                        <Text>This is content section</Text>
-                    </Content>
-                    <Footer>
-                        <FooterTab>
-                            <Button full>
-                                <Text>Footer</Text>
-                            </Button>
-                        </FooterTab>
-                        <FooterTab>
-                            <Button full>
-                                <Text>Footer</Text>
-                            </Button>
-                        </FooterTab>
-                    </Footer>
-                </Container>
-            </Drawer>
-        );
-    }
-}
 export default App;
+
+
+
